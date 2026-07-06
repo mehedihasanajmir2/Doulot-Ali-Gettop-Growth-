@@ -1,4 +1,4 @@
-import { ArrowUpRight, ChevronUp, Mail, Phone, MapPin, Mic, TrendingUp } from 'lucide-react';
+import { ArrowUpRight, ChevronUp, Mail, Phone, MapPin, Mic, TrendingUp, Facebook, Instagram, Twitter, Linkedin } from 'lucide-react';
 import Logo from './Logo';
 import { useWebsiteData } from '../context/WebsiteContext';
 
@@ -176,20 +176,42 @@ export default function Footer({ onOpenConsultation }: FooterProps) {
           {/* Col 3: Social handles */}
           <div className="lg:col-span-2 text-left space-y-4">
             <h4 className="text-sm font-bold text-white tracking-wider">Social Media</h4>
-            <ul className="space-y-2 text-slate-400 text-xs sm:text-sm font-medium">
-              {Object.entries(footer.socials).map(([name, url]) => (
-                <li key={name}>
+            <div className="flex flex-wrap gap-3">
+              {Object.entries(footer.socials).map(([name, url]) => {
+                let IconComponent = null;
+                let hoverColor = 'hover:bg-blue-600';
+                
+                if (name === 'facebook') {
+                  IconComponent = Facebook;
+                  hoverColor = 'hover:bg-blue-600 hover:text-white hover:border-blue-600';
+                } else if (name === 'instagram') {
+                  IconComponent = Instagram;
+                  hoverColor = 'hover:bg-gradient-to-tr hover:from-yellow-500 hover:to-purple-600 hover:text-white hover:border-pink-500';
+                } else if (name === 'twitter') {
+                  IconComponent = Twitter;
+                  hoverColor = 'hover:bg-sky-500 hover:text-white hover:border-sky-500';
+                } else if (name === 'linkedin') {
+                  IconComponent = Linkedin;
+                  hoverColor = 'hover:bg-blue-700 hover:text-white hover:border-blue-700';
+                }
+
+                if (!IconComponent) return null;
+
+                return (
                   <a
+                    key={name}
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-white transition-colors capitalize"
+                    className={`flex h-10 w-10 items-center justify-center rounded-full bg-slate-800/80 border border-slate-700/80 text-slate-300 ${hoverColor} transition-all duration-300 shadow-md hover:scale-110 hover:-translate-y-0.5`}
+                    title={`Follow us on ${name}`}
+                    aria-label={`Follow us on ${name}`}
                   >
-                    {name}
+                    <IconComponent className="h-5 w-5" />
                   </a>
-                </li>
-              ))}
-            </ul>
+                );
+              })}
+            </div>
           </div>
 
           {/* Col 4: Contact region matching details */}
