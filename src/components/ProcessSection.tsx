@@ -1,36 +1,56 @@
 import { useWebsiteData } from '../context/WebsiteContext';
+import { motion } from 'motion/react';
 
 export default function ProcessSection() {
   const { data } = useWebsiteData();
   const { processSteps } = data;
 
   return (
-    <section className="py-20 bg-transparent border-y border-slate-800/60" id="process-section">
+    <section className="py-20 bg-transparent border-y border-slate-800/60 overflow-x-hidden" id="process-section">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
         
-        {/* Hot Pink label */}
-        <span className="text-xs font-bold tracking-widest text-brand-magenta uppercase block">
-          How Podcasts Grow
-        </span>
+        {/* Hot Pink label, Heading, and Description wrapped in a smooth motion fade + slide */}
+        <motion.div
+          initial={{ x: 120, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+          style={{ willChange: "transform, opacity" }}
+          className="flex flex-col items-center"
+        >
+          <span className="text-xs font-bold tracking-widest text-brand-magenta uppercase block">
+            How Podcasts Grow
+          </span>
 
-        {/* Heading */}
-        <h2 className="text-3xl sm:text-4xl font-bold font-display text-white tracking-tight leading-tight mt-2">
-          How We Start Your Podcast Growth Journey
-        </h2>
+          {/* Heading */}
+          <h2 className="text-3xl sm:text-4xl font-bold font-display text-white tracking-tight leading-tight mt-2">
+            How We Start Your Podcast Growth Journey
+          </h2>
 
-        {/* Subtext description */}
-        <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto mt-3 leading-relaxed mb-16">
-          A simple, proven process designed to analyze, optimize, and position your podcast for long-term visibility and rankings.
-        </p>
+          {/* Subtext description */}
+          <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto mt-3 leading-relaxed mb-16">
+            A simple, proven process designed to analyze, optimize, and position your podcast for long-term visibility and rankings.
+          </p>
+        </motion.div>
 
         {/* Grid of 4 cards (2 columns on large screens, 1 on small) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {processSteps.map((step) => {
+          {processSteps.map((step, index) => {
             const isImageLeft = step.layout === 'image-left';
             return (
-              <div
+              <motion.div
                 key={step.id}
-                className="bg-[#0B132B] rounded-2xl overflow-hidden border border-slate-800 shadow-md transition-all duration-300 hover:shadow-lg hover:border-purple-900/50 flex flex-col sm:flex-row items-stretch"
+                initial={{ x: 120, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                whileHover={{ y: -6 }}
+                transition={{
+                  x: { duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: index * 0.15 },
+                  opacity: { duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: index * 0.15 },
+                  y: { duration: 0.3, ease: "easeOut" }
+                }}
+                style={{ willChange: "transform, opacity" }}
+                className="bg-[#0B132B] rounded-2xl overflow-hidden border border-slate-800 shadow-md flex flex-col sm:flex-row items-stretch transition-shadow duration-300 hover:shadow-lg hover:border-purple-900/50"
                 id={`process-card-${step.id}`}
               >
                 {/* Image panel */}
@@ -68,7 +88,7 @@ export default function ProcessSection() {
                     {step.description}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

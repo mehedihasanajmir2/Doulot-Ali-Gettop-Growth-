@@ -13,13 +13,21 @@ export default function CategorySection() {
   const activeCategory = categories[safeIndex] || { name: 'Podcast SEO', tagline: 'Top Charts Target', description: 'Expert SEO optimization' };
 
   return (
-    <section className="py-20 bg-transparent border-t border-slate-800" id="categories-section">
+    <section className="py-20 bg-transparent border-t border-slate-800 overflow-x-hidden" id="categories-section">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* Left Column: Cozy Microphoning image */}
-          <div className="lg:col-span-4 relative" id="categories-visual">
+          <motion.div
+            initial={{ x: 120, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0 }}
+            style={{ willChange: "transform, opacity" }}
+            className="lg:col-span-4 relative"
+            id="categories-visual"
+          >
             <div className="rounded-2xl overflow-hidden shadow-xl border border-slate-800 bg-[#0B132B]">
               <img
                 src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=600"
@@ -31,10 +39,18 @@ export default function CategorySection() {
             
             {/* Ambient accent lights */}
             <div className="absolute -bottom-8 -right-8 h-24 w-24 bg-brand-purple/20 rounded-full blur-2xl -z-10" />
-          </div>
+          </motion.div>
 
           {/* Center Column: List of Categories with right arrow triggers */}
-          <div className="lg:col-span-4 space-y-3" id="categories-list">
+          <motion.div
+            initial={{ x: 120, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            style={{ willChange: "transform, opacity" }}
+            className="lg:col-span-4 space-y-3"
+            id="categories-list"
+          >
             {categories.map((cat, idx) => {
               const isActive = safeIndex === idx;
               return (
@@ -63,10 +79,18 @@ export default function CategorySection() {
                 </button>
               );
             })}
-          </div>
+          </motion.div>
 
           {/* Right Column: Descriptions & Details Box */}
-          <div className="lg:col-span-4 space-y-6 text-left" id="categories-right-panel">
+          <motion.div
+            initial={{ x: 120, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+            style={{ willChange: "transform, opacity" }}
+            className="lg:col-span-4 space-y-6 text-left"
+            id="categories-right-panel"
+          >
             {/* Magenta category tag */}
             <span className="text-xs font-bold tracking-widest text-brand-magenta uppercase block">
               Podcast Category
@@ -111,7 +135,7 @@ export default function CategorySection() {
                 </p>
               </motion.div>
             </AnimatePresence>
-          </div>
+          </motion.div>
           
         </div>
       </div>

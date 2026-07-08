@@ -1,5 +1,6 @@
 import { Check, Sparkles, Flame, HelpCircle } from 'lucide-react';
 import { useWebsiteData } from '../context/WebsiteContext';
+import { motion } from 'motion/react';
 
 interface PricingSectionProps {
   onSelectPlan: (planName: string) => void;
@@ -11,46 +12,65 @@ export default function PricingSection({ onSelectPlan, onOpenConsultation }: Pri
   const { pricingPlans } = data;
 
   return (
-    <section id="pricing" className="py-20 bg-transparent relative">
+    <section id="pricing" className="py-20 bg-transparent relative overflow-x-hidden">
       {/* Background glow subtle effects */}
       <div className="absolute top-1/4 left-1/3 h-96 w-96 rounded-full bg-purple-500/10 blur-3xl -z-10" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
         
         {/* Label, Header and Description */}
-        <span className="text-xs font-bold tracking-widest text-brand-magenta uppercase block">
-          Choose a Plan
-        </span>
-        
-        <h2 className="text-3xl sm:text-4xl font-bold font-display text-white tracking-tight leading-tight mt-2">
-          Choose Your Podcast Growth Plan
-        </h2>
+        <motion.div
+          initial={{ x: 120, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+          style={{ willChange: "transform, opacity" }}
+          className="flex flex-col items-center"
+        >
+          <span className="text-xs font-bold tracking-widest text-brand-magenta uppercase block">
+            Choose a Plan
+          </span>
+          
+          <h2 className="text-3xl sm:text-4xl font-bold font-display text-white tracking-tight leading-tight mt-2">
+            Choose Your Podcast Growth Plan
+          </h2>
 
-        <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto mt-3 leading-relaxed">
-          Flexible plans designed to help you increase visibility, rank higher, and grow your audience with confidence.
-        </p>
+          <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto mt-3 leading-relaxed">
+            Flexible plans designed to help you increase visibility, rank higher, and grow your audience with confidence.
+          </p>
 
-        {/* Discover More Accent CTA */}
-        <div className="mt-6 mb-16">
-          <button
-            onClick={onOpenConsultation}
-            className="inline-flex items-center justify-center rounded-full bg-brand-cyan hover:bg-[#00e2c4] text-slate-950 font-bold px-7 py-3 text-sm tracking-wide shadow-sm hover:shadow-md transition-all active:scale-98"
-            id="pricing-discover-more-btn"
-          >
-            Discover More
-          </button>
-        </div>
+          {/* Discover More Accent CTA */}
+          <div className="mt-6 mb-16">
+            <button
+              onClick={onOpenConsultation}
+              className="inline-flex items-center justify-center rounded-full bg-brand-cyan hover:bg-[#00e2c4] text-slate-950 font-bold px-7 py-3 text-sm tracking-wide shadow-sm hover:shadow-md transition-all active:scale-98"
+              id="pricing-discover-more-btn"
+            >
+              Discover More
+            </button>
+          </div>
+        </motion.div>
 
         {/* 3 Packages Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-center items-stretch max-w-5xl mx-auto">
-          {pricingPlans.map((plan) => {
+          {pricingPlans.map((plan, index) => {
             const isPurple = plan.isHighlighted;
             return (
-              <div
+              <motion.div
                 key={plan.name}
-                className={`rounded-2xl p-6 sm:p-8 flex flex-col justify-between text-left transition-all duration-300 hover:scale-[1.03] shadow-lg relative ${
+                initial={{ x: 120, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                whileHover={{ y: -8 }}
+                transition={{
+                  x: { duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: index * 0.15 },
+                  opacity: { duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: index * 0.15 },
+                  y: { duration: 0.3, ease: "easeOut" }
+                }}
+                style={{ willChange: "transform, opacity" }}
+                className={`rounded-2xl p-6 sm:p-8 flex flex-col justify-between text-left shadow-lg relative transition-shadow duration-300 ${
                   isPurple
-                    ? 'bg-brand-purple text-white ring-4 ring-purple-900/50 shadow-purple-950/50 scale-[1.03]'
+                    ? 'bg-brand-purple text-white ring-4 ring-purple-900/50 shadow-purple-950/50'
                     : 'bg-[#0B132B]/80 text-white border border-slate-800'
                 }`}
                 id={`pricing-card-${plan.name.toLowerCase().replace(/\s+/g, '-')}`}
@@ -124,7 +144,7 @@ export default function PricingSection({ onSelectPlan, onOpenConsultation }: Pri
                     Select Plan & Grow
                   </button>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

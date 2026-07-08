@@ -76,7 +76,15 @@ export default function TestimonialsSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* Left Column: Portrait and quotation badge overlay */}
-          <div className="lg:col-span-4 relative" id="testimonials-visual">
+          <motion.div
+            initial={{ x: 120, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0 }}
+            style={{ willChange: "transform, opacity" }}
+            className="lg:col-span-4 relative"
+            id="testimonials-visual"
+          >
             <div className="relative rounded-2xl overflow-hidden shadow-2xl max-w-sm mx-auto lg:max-w-none border border-slate-800 bg-[#0B132B]">
               <img
                 src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&q=80&w=600"
@@ -95,10 +103,18 @@ export default function TestimonialsSection() {
             
             {/* Backdrop lighting */}
             <div className="absolute -top-6 -left-6 h-32 w-32 bg-blue-500/10 rounded-full blur-2xl -z-10 animate-pulse" />
-          </div>
+          </motion.div>
 
           {/* Right Column: Quotes List Slider */}
-          <div className="lg:col-span-8 space-y-6 text-left" id="testimonials-reviews">
+          <motion.div
+            initial={{ x: 120, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            style={{ willChange: "transform, opacity" }}
+            className="lg:col-span-8 space-y-6 text-left"
+            id="testimonials-reviews"
+          >
             
             <div className="border-b border-slate-800/60 pb-4">
               {/* Magenta Tag */}
@@ -381,7 +397,7 @@ export default function TestimonialsSection() {
               </AnimatePresence>
             </div>
 
-          </div>
+          </motion.div>
           
         </div>
       </div>
