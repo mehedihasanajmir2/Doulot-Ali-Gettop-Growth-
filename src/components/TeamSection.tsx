@@ -63,13 +63,13 @@ export default function TeamSection({ onOpenConsultation }: TeamSectionProps) {
             
             if (position === 0) {
               // Left: Slide in from left
-              initial = { x: -60, opacity: 0 };
+              initial = { x: -80, opacity: 0 };
             } else if (position === 1) {
               // Middle: Slide up from bottom
-              initial = { y: 60, opacity: 0 };
+              initial = { y: 80, opacity: 0 };
             } else {
               // Right: Slide in from right
-              initial = { x: 60, opacity: 0 };
+              initial = { x: 80, opacity: 0 };
             }
 
             return (
@@ -77,8 +77,9 @@ export default function TeamSection({ onOpenConsultation }: TeamSectionProps) {
                 key={member.name}
                 initial={initial}
                 whileInView={{ x: 0, y: 0, opacity: 1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1], delay: index * 0.1 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 2.0, ease: [0.16, 1, 0.3, 1], delay: index * 0.15 }}
+                style={{ willChange: "transform, opacity" }}
                 className="group relative rounded-2xl overflow-hidden shadow-lg border border-slate-800 bg-[#0B132B] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl max-w-sm mx-auto w-full"
                 id={`team-member-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
               >
