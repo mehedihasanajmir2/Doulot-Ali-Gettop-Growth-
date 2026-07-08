@@ -187,7 +187,7 @@ export default function AdminPanel() {
             { id: 'about', name: 'About & Stats', icon: Info },
             { id: 'episodes', name: 'Podcast & Category', icon: Mic },
             { id: 'pricing', name: 'Pricing Plans & Process', icon: DollarSign },
-            { id: 'testimonials', name: 'Client Reviews', icon: MessageSquare },
+            { id: 'testimonials', name: 'What They Say (Reviews)', icon: MessageSquare },
             { id: 'team', name: 'Your Podcast Growth Team', icon: Users },
             { id: 'footer', name: 'Footer & Contacts', icon: FileText },
           ].map((tab) => {
@@ -797,13 +797,15 @@ export default function AdminPanel() {
                 <div className="border border-slate-800 rounded-2xl bg-slate-900/30 p-6 space-y-4">
                   <div>
                     <h3 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
-                      <span>🖼️ Testimonials Section Main Image</span>
+                      <span>🖼️ "What They Say" Section Main Image (ডান পাশের মূল ছবি)</span>
                     </h3>
-                    <p className="text-xs text-slate-400 mb-4">Edit the prominent side photo shown next to the "What they say about us" testimonial cards.</p>
+                    <p className="text-xs text-slate-300 leading-relaxed mb-4">
+                      "What they say about us" সেকশনের ডান পাশে যে মূল বড় ছবিটি রয়েছে, তা এখান থেকে পরিবর্তন করুন। নিচে ছবি আপলোড বা ওয়েবলিঙ্ক দিয়ে উপরের ডান কোনার <strong className="text-emerald-400">"Save Changes"</strong> বাটনে ক্লিক করে সেভ করুন।
+                    </p>
                     <ImageUploader
                       value={localTestimonialsImage}
                       onChange={(val) => setLocalTestimonialsImage(val)}
-                      label="🖼️ Section Side Image"
+                      label="🖼️ Section Side Image (ডান পাশের ছবি)"
                     />
                   </div>
                 </div>
