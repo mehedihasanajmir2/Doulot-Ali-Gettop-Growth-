@@ -59,15 +59,15 @@ export default function TeamSection({ onOpenConsultation }: TeamSectionProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-center overflow-hidden">
           {teamMembers.map((member, index) => {
             // Every card slides in smoothly from the far right of the screen (right to left)
-            const initial = { x: 250, opacity: 0 };
+            const initial = { x: 120, opacity: 0 };
 
             return (
               <motion.div
                 key={member.name}
                 initial={initial}
                 whileInView={{ x: 0, opacity: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: index * 1.4 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1], delay: index * 0.4 }}
                 style={{ willChange: "transform, opacity" }}
                 className="group relative rounded-2xl overflow-hidden shadow-lg border border-slate-800 bg-[#0B132B] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl max-w-sm mx-auto w-full"
                 id={`team-member-${member.name.toLowerCase().replace(/\s+/g, '-')}`}
