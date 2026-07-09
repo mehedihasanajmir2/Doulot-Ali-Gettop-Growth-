@@ -68,9 +68,12 @@ export interface WebsiteData {
 const migrateWebsiteData = (obj: any): any => {
   if (typeof obj === 'string') {
     return obj
-      .replace(/PodcastTopRankMedia/g, 'Doulot Ali Podcast Ranking Media')
-      .replace(/Doulot Ali Gettop Growth/g, 'Doulot Ali Podcast Ranking Media')
-      .replace(/Gettop Growth/g, 'Podcast Ranking Media');
+      .replace(/Doulot Ali Podcast Ranking Media/g, 'Doulot Podcast Rank')
+      .replace(/PodcastTopRankMedia/g, 'Doulot Podcast Rank')
+      .replace(/Doulot Ali Gettop Growth/g, 'Doulot Podcast Rank')
+      .replace(/Doulot Ali/g, 'Doulot')
+      .replace(/Podcast Ranking Media/g, 'Podcast Rank')
+      .replace(/Gettop Growth/g, 'Podcast Rank');
   } else if (Array.isArray(obj)) {
     return obj.map(migrateWebsiteData);
   } else if (obj !== null && typeof obj === 'object') {
@@ -85,24 +88,24 @@ const migrateWebsiteData = (obj: any): any => {
 
 const DEFAULT_WEBSITE_DATA: WebsiteData = {
   logo: {
-    textTop: 'Doulot Ali',
-    textBottom: 'Podcast Ranking Media',
+    textTop: 'Doulot',
+    textBottom: 'Podcast Rank',
   },
   hero: {
     tagline: 'Podcast SEO & Growth Agency',
     title: 'From Launch to Top Charts — We Make It Happen',
-    description: 'Doulot Ali Podcast Ranking Media helps podcasters boost visibility, attract more listeners, and grow their audience with expert SEO and marketing strategies tailored for every platform.',
+    description: 'Doulot Podcast Rank helps podcasters boost visibility, attract more listeners, and grow their audience with expert SEO and marketing strategies tailored for every platform.',
     buttonText: 'Start Growing Today',
     statBadgeText: 'Join 200+ successful podcasters',
     imageLeft: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&q=80&w=600',
     imageRight: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&q=80&w=600',
   },
   about: {
-    label: 'About Doulot Ali Podcast Ranking Media',
+    label: 'About Doulot Podcast Rank',
     title: 'The Growth Engine Behind Successful Podcasts.',
     subtitle: 'Helping Podcasters Get Found, Heard, and Ranked',
     paragraphs: [
-      'Doulot Ali Podcast Ranking Media was built with one clear goal: to help podcasters grow through smart SEO and strategic marketing. We focus on increasing visibility across major podcast platforms so your show reaches the right audience at the right time.',
+      'Doulot Podcast Rank was built with one clear goal: to help podcasters grow through smart SEO and strategic marketing. We focus on increasing visibility across major podcast platforms so your show reaches the right audience at the right time.',
       'From keyword optimization and metadata strategy to promotion and growth planning, we use proven techniques that improve discoverability and drive real listener growth. Whether you\'re launching a new podcast or scaling an existing one, we help position your show to stand out in a crowded market.',
       'We don\'t believe in guesswork. We believe in strategy, data, and results.'
     ],
@@ -143,7 +146,7 @@ const DEFAULT_WEBSITE_DATA: WebsiteData = {
     facebook: '#',
     instagram: '#',
     twitter: '#',
-    copyright: 'Copyright © 2026 Doulot Ali Podcast Ranking Media, All rights reserved.',
+    copyright: 'Copyright © 2026 Doulot Podcast Rank, All rights reserved.',
   },
 };
 

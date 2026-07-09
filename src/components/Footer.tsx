@@ -35,12 +35,12 @@ export default function Footer({ onOpenConsultation }: FooterProps) {
   const { contactInfo } = data;
 
   const footer = {
-    ctaTitle: 'Doulot Ali Podcast Ranking Media Starting Today',
-    description: 'Doulot Ali Podcast Ranking Media helps podcasters rank higher, grow faster, and reach the right audience through proven SEO and marketing strategies.',
+    ctaTitle: 'Doulot Podcast Rank Starting Today',
+    description: 'Doulot Podcast Rank helps podcasters rank higher, grow faster, and reach the right audience through proven SEO and marketing strategies.',
     address: contactInfo?.address || 'Khoksa, Kushtia, Bangladesh',
     email: contactInfo?.email || 'doulotaligettopgrowth@gmail.com',
     phone: contactInfo?.phone || '+880 1765-068860',
-    copyright: contactInfo?.copyright || 'Copyright © 2026 Doulot Ali Podcast Ranking Media, All rights reserved.',
+    copyright: contactInfo?.copyright || 'Copyright © 2026 Doulot Podcast Rank, All rights reserved.',
     socials: {
       facebook: formatSocialUrl(contactInfo?.facebook, 'facebook.com'),
       instagram: formatSocialUrl(contactInfo?.instagram, 'instagram.com'),
