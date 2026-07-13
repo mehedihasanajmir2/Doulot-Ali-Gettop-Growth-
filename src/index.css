@@ -209,3 +209,121 @@ footer input {
   transition: height 0.3s ease;
 }
 
+/* --- Admin Panel Isolated Styles --- */
+#admin-panel-container {
+  background-color: #020617 !important; /* Force slate-950 background */
+}
+
+#admin-panel-container h1,
+#admin-panel-container h2,
+#admin-panel-container h3,
+#admin-panel-container h4,
+#admin-panel-container h5,
+#admin-panel-container h6,
+#admin-panel-container .text-white,
+#admin-panel-container .text-slate-100,
+#admin-panel-container .text-slate-200 {
+  color: #ffffff !important;
+}
+
+#admin-panel-container p,
+#admin-panel-container span:not(.text-emerald-400):not(.text-rose-400):not(.text-violet-400):not(.text-emerald-500):not(.text-violet-500):not(.bg-violet-600),
+#admin-panel-container label,
+#admin-panel-container li,
+#admin-panel-container .text-slate-300,
+#admin-panel-container .text-slate-400 {
+  color: #cbd5e1 !important; /* slate-300 text */
+}
+
+#admin-panel-container .text-violet-400,
+#admin-panel-container .text-violet-400 * {
+  color: #a78bfa !important; /* violet-400 */
+}
+
+#admin-panel-container .text-rose-400,
+#admin-panel-container .text-rose-400 * {
+  color: #fb7185 !important; /* rose-400 */
+}
+
+#admin-panel-container .text-emerald-400,
+#admin-panel-container .text-emerald-400 * {
+  color: #34d399 !important; /* emerald-400 */
+}
+
+#admin-panel-container input,
+#admin-panel-container textarea,
+#admin-panel-container select {
+  color: #ffffff !important;
+  background-color: #0f172a !important; /* dark slate bg */
+  border-color: #334155 !important;
+}
+
+#admin-panel-container input:focus,
+#admin-panel-container textarea:focus,
+#admin-panel-container select:focus {
+  border-color: #8b5cf6 !important; /* violet-500 focus */
+}
+
+#admin-panel-container .bg-slate-900,
+#admin-panel-container .bg-slate-900\/90,
+#admin-panel-container .bg-slate-900\/30,
+#admin-panel-container .bg-slate-950 {
+  background-color: #0f172a !important;
+}
+
+#admin-panel-container .border-slate-800 {
+  border-color: #1e293b !important;
+}
+
+/* --- Admin Login Modal Isolated Styles --- */
+#admin-login-modal-container {
+  background-color: #0b1329 !important; /* Elegant dark background */
+  border-color: #1e293b !important;
+}
+
+#admin-login-modal-container h3,
+#admin-login-modal-container .text-white {
+  color: #ffffff !important;
+}
+
+#admin-login-modal-container p,
+#admin-login-modal-container .text-slate-400 {
+  color: #94a3b8 !important; /* slate-400 */
+}
+
+#admin-login-modal-container label,
+#admin-login-modal-container .text-slate-300 {
+  color: #cbd5e1 !important; /* slate-300 */
+}
+
+#admin-login-modal-container input {
+  background-color: #020617 !important;
+  color: #ffffff !important;
+  border-color: #334155 !important;
+}
+
+#admin-login-modal-container input::placeholder {
+  color: #64748b !important; /* slate-500 */
+}
+
+#admin-login-modal-container .text-violet-400,
+#admin-login-modal-container .text-violet-400 * {
+  color: #a78bfa !important;
+}
+
+#admin-login-modal-container code {
+  background-color: #020617 !important;
+  color: #a78bfa !important;
+}
+
+#admin-login-modal-container button[type="submit"] {
+  background-color: #7c3aed !important;
+  color: #ffffff !important;
+}
+
+#admin-login-modal-container button[type="submit"]:hover {
+  background-color: #6d28d9 !important;
+}
+
+
+

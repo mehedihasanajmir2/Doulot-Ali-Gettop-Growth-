@@ -29,6 +29,45 @@ import ImageUploader from './ImageUploader';
 import { collection, getDocs, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
+const AdminPanelContext = React.createContext<{
+  unlockedFields: Record<string, boolean>;
+  handleToggleLock: (fieldId: string, label: string) => void;
+} | null>(null);
+
+const LockedField = ({ fieldId, label, children }: { fieldId: string; label: string; children: React.ReactNode; key?: any }) => {
+  const context = React.useContext(AdminPanelContext);
+  if (!context) {
+    throw new Error('LockedField must be used within an AdminPanelContext.Provider');
+  }
+  const isUnlocked = !!context.unlockedFields[fieldId];
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between gap-4">
+        <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">{label}</label>
+        <button
+          type="button"
+          onClick={() => context.handleToggleLock(fieldId, label)}
+          title={isUnlocked ? "Unlocked (Click to Lock)" : "Locked (Click to Unlock)"}
+          className={`inline-flex items-center justify-center p-1.5 rounded-lg transition-all border shrink-0 ${
+            isUnlocked 
+              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20' 
+              : 'bg-rose-500/10 border-rose-500/30 text-rose-400 hover:bg-rose-500/20'
+          }`}
+        >
+          {isUnlocked ? (
+            <Unlock className="h-3.5 w-3.5 text-emerald-400 animate-pulse" />
+          ) : (
+            <Lock className="h-3.5 w-3.5 text-rose-400" />
+          )}
+        </button>
+      </div>
+      <div className={`transition-all duration-300 ${!isUnlocked ? "opacity-40 pointer-events-none select-none" : ""}`}>
+        {children}
+      </div>
+    </div>
+  );
+};
+
 export default function AdminPanel() {
   const {
     data,
@@ -101,6 +140,24 @@ export default function AdminPanel() {
     setUnlockedFields({});
   }, [isAdminPanelOpen]);
 
+  const handleFirestoreError = (error: unknown, operationType: 'create' | 'update' | 'delete' | 'list' | 'get' | 'write', path: string | null) => {
+    const errMessage = error instanceof Error ? error.message : String(error);
+    const errInfo = {
+      error: errMessage,
+      operationType,
+      path,
+      authInfo: {
+        userId: null,
+        email: null,
+        emailVerified: null,
+        isAnonymous: null,
+        tenantId: null
+      }
+    };
+    console.error('Firestore Error Info:', JSON.stringify(errInfo));
+    throw new Error(JSON.stringify(errInfo));
+  };
+
   const fetchBookings = async () => {
     setBookingsLoading(true);
     try {
@@ -113,6 +170,11 @@ export default function AdminPanel() {
       setBookings(list);
     } catch (err) {
       console.error('Error fetching bookings:', err);
+      try {
+        handleFirestoreError(err, 'list', 'bookings');
+      } catch (e) {
+        // Fallback catch to prevent uncaught promise rejections if needed
+      }
     } finally {
       setBookingsLoading(false);
     }
@@ -125,6 +187,11 @@ export default function AdminPanel() {
         setBookings(prev => prev.filter(b => b.id !== id));
       } catch (err) {
         console.error('Error deleting booking:', err);
+        try {
+          handleFirestoreError(err, 'delete', `bookings/${id}`);
+        } catch (e) {
+          // Fallback catch
+        }
       }
     }
   };
@@ -161,36 +228,8 @@ export default function AdminPanel() {
     }
   };
 
-  // Reusable locked field wrapper component
-  const LockedField = ({ fieldId, label, children }: { fieldId: string; label: string; children: React.ReactNode; key?: any }) => {
-    const isUnlocked = !!unlockedFields[fieldId];
-    return (
-      <div className="space-y-2">
-        <div className="flex items-center justify-between gap-4">
-          <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">{label}</label>
-          <button
-            type="button"
-            onClick={() => handleToggleLock(fieldId, label)}
-            title={isUnlocked ? "Unlocked (Click to Lock)" : "Locked (Click to Unlock)"}
-            className={`inline-flex items-center justify-center p-1.5 rounded-lg transition-all border shrink-0 ${
-              isUnlocked 
-                ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20' 
-                : 'bg-rose-500/10 border-rose-500/30 text-rose-400 hover:bg-rose-500/20'
-            }`}
-          >
-            {isUnlocked ? (
-              <Unlock className="h-3.5 w-3.5 text-emerald-400 animate-pulse" />
-            ) : (
-              <Lock className="h-3.5 w-3.5 text-rose-400" />
-            )}
-          </button>
-        </div>
-        <div className={`transition-all duration-300 ${!isUnlocked ? "opacity-40 pointer-events-none select-none" : ""}`}>
-          {children}
-        </div>
-      </div>
-    );
-  };
+  // Unlocked fields are managed inside state and passed via React context
+
 
   // Sync local states when admin panel opens or website data is loaded/changed
   useEffect(() => {
@@ -272,7 +311,8 @@ export default function AdminPanel() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-slate-950 text-white overflow-hidden" id="admin-panel-container">
+    <AdminPanelContext.Provider value={{ unlockedFields, handleToggleLock }}>
+      <div className="fixed inset-0 z-50 flex flex-col bg-slate-950 text-white overflow-hidden" id="admin-panel-container">
       {/* Top Banner Bar */}
       <header className="flex h-16 shrink-0 items-center justify-between border-b border-slate-800 bg-slate-900/90 px-4 sm:px-6 backdrop-blur-md">
         <div className="flex items-center gap-3">
@@ -1528,5 +1568,6 @@ export default function AdminPanel() {
         )}
       </AnimatePresence>
     </div>
+    </AdminPanelContext.Provider>
   );
 }

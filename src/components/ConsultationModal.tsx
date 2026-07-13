@@ -126,6 +126,24 @@ export default function ConsultationModal({ isOpen, onClose, selectedPlanName = 
       });
     } catch (err) {
       console.error('Error saving booking to Firestore:', err);
+      try {
+        const errMessage = err instanceof Error ? err.message : String(err);
+        const errInfo = {
+          error: errMessage,
+          operationType: 'write',
+          path: `bookings/${tokenVal}`,
+          authInfo: {
+            userId: null,
+            email: null,
+            emailVerified: null,
+            isAnonymous: null,
+            tenantId: null
+          }
+        };
+        console.error('Firestore Error Info:', JSON.stringify(errInfo));
+      } catch (e) {
+        // Fallback
+      }
     } finally {
       setLoading(false);
       setSubmitted(true);
