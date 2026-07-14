@@ -1315,7 +1315,7 @@ export default function AdminPanel() {
                       />
                     </LockedField>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                       <LockedField fieldId="contact-facebook" label="🔗 Facebook Profile Link (FACEBOOK URL)">
                         <input
                           type="text"
@@ -1337,6 +1337,14 @@ export default function AdminPanel() {
                           type="text"
                           value={localContact.twitter}
                           onChange={(e) => setLocalContact({ ...localContact, twitter: e.target.value })}
+                          className="w-full rounded-xl bg-slate-900 border border-slate-800 px-4 py-2.5 text-sm focus:border-violet-500 focus:outline-none text-xs font-mono text-slate-300"
+                        />
+                      </LockedField>
+                      <LockedField fieldId="contact-linkedin" label="🔗 LinkedIn Profile Link (LINKEDIN URL)">
+                        <input
+                          type="text"
+                          value={localContact.linkedin || ''}
+                          onChange={(e) => setLocalContact({ ...localContact, linkedin: e.target.value })}
                           className="w-full rounded-xl bg-slate-900 border border-slate-800 px-4 py-2.5 text-sm focus:border-violet-500 focus:outline-none text-xs font-mono text-slate-300"
                         />
                       </LockedField>

@@ -82,6 +82,7 @@ export interface WebsiteData {
     facebook: string;
     instagram: string;
     twitter: string;
+    linkedin: string;
     copyright: string;
   };
   emailNotification?: {
@@ -106,6 +107,9 @@ const migrateWebsiteData = (obj: any): any => {
     const res: any = {};
     for (const key of Object.keys(obj)) {
       res[key] = migrateWebsiteData(obj[key]);
+    }
+    if (res.contactInfo && !res.contactInfo.linkedin) {
+      res.contactInfo.linkedin = '#';
     }
     return res;
   }
@@ -198,6 +202,7 @@ const DEFAULT_WEBSITE_DATA: WebsiteData = {
     facebook: '#',
     instagram: '#',
     twitter: '#',
+    linkedin: '#',
     copyright: 'Copyright © 2026 Podcast Ranking Hub, All rights reserved.',
   },
   emailNotification: {

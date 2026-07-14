@@ -45,6 +45,7 @@ export default function Footer({ onOpenConsultation }: FooterProps) {
       facebook: formatSocialUrl(contactInfo?.facebook, 'facebook.com'),
       instagram: formatSocialUrl(contactInfo?.instagram, 'instagram.com'),
       twitter: formatSocialUrl(contactInfo?.twitter, 'twitter.com'),
+      linkedin: formatSocialUrl(contactInfo?.linkedin, 'linkedin.com'),
     }
   };
 
@@ -176,7 +177,7 @@ export default function Footer({ onOpenConsultation }: FooterProps) {
           {/* Col 3: Social handles */}
           <div className="lg:col-span-2 text-left space-y-4">
             <h4 className="text-sm font-bold text-white tracking-wider">Social Media</h4>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-row items-center gap-3 flex-nowrap">
               {Object.entries(footer.socials).map(([name, url]) => {
                 let IconComponent = null;
                 let hoverColor = 'hover:bg-blue-600';
