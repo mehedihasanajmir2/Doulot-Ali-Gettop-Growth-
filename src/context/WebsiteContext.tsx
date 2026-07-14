@@ -203,7 +203,7 @@ const DEFAULT_WEBSITE_DATA: WebsiteData = {
   emailNotification: {
     enabled: true,
     recipientEmail: 'doulotaligettopgrowth@gmail.com',
-    web3formKey: '2fd99b81-d471-4790-8188-68f800316d9f',
+    web3formKey: '81e529bf-cc0a-4104-b8c3-def656e8d0fb',
   },
 };
 
@@ -249,16 +249,16 @@ export function WebsiteProvider({ children }: { children: React.ReactNode }) {
         const cloudData = docSnap.data() as WebsiteData;
         const migratedData = migrateWebsiteData(cloudData);
         
-        // Auto-save the Web3Forms access key if missing or empty in Firestore database configuration
+        // Auto-save the Web3Forms access key if missing, empty, or using the old key in Firestore database configuration
         if (!migratedData.emailNotification) {
           migratedData.emailNotification = {
             enabled: true,
             recipientEmail: 'doulotaligettopgrowth@gmail.com',
-            web3formKey: '2fd99b81-d471-4790-8188-68f800316d9f'
+            web3formKey: '81e529bf-cc0a-4104-b8c3-def656e8d0fb'
           };
           setDoc(docRef, migratedData).catch(err => console.error('Error auto-updating config with email notifications:', err));
-        } else if (!migratedData.emailNotification.web3formKey) {
-          migratedData.emailNotification.web3formKey = '2fd99b81-d471-4790-8188-68f800316d9f';
+        } else if (!migratedData.emailNotification.web3formKey || migratedData.emailNotification.web3formKey === '2fd99b81-d471-4790-8188-68f800316d9f') {
+          migratedData.emailNotification.web3formKey = '81e529bf-cc0a-4104-b8c3-def656e8d0fb';
           setDoc(docRef, migratedData).catch(err => console.error('Error auto-updating config with web3formKey:', err));
         }
 

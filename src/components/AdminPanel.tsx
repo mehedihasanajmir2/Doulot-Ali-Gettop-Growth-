@@ -124,7 +124,7 @@ export default function AdminPanel() {
   const [localBooking, setLocalBooking] = useState(data.booking || defaultBooking);
   const [localBookingPlatforms, setLocalBookingPlatforms] = useState(data.bookingPlatforms || defaultBookingPlatforms);
   const [localContact, setLocalContact] = useState(data.contactInfo);
-  const [localEmailNotification, setLocalEmailNotification] = useState(data.emailNotification || { enabled: true, recipientEmail: 'doulotaligettopgrowth@gmail.com', web3formKey: '2fd99b81-d471-4790-8188-68f800316d9f' });
+  const [localEmailNotification, setLocalEmailNotification] = useState(data.emailNotification || { enabled: true, recipientEmail: 'doulotaligettopgrowth@gmail.com', web3formKey: '81e529bf-cc0a-4104-b8c3-def656e8d0fb' });
 
   // States for locking/unlocking edit boxes
   const [unlockedFields, setUnlockedFields] = useState<Record<string, boolean>>({});
@@ -270,7 +270,7 @@ export default function AdminPanel() {
       setLocalBooking(data.booking || defaultBooking);
       setLocalBookingPlatforms(data.bookingPlatforms || defaultBookingPlatforms);
       setLocalContact(data.contactInfo);
-      setLocalEmailNotification(data.emailNotification || { enabled: true, recipientEmail: 'doulotaligettopgrowth@gmail.com', web3formKey: '2fd99b81-d471-4790-8188-68f800316d9f' });
+      setLocalEmailNotification(data.emailNotification || { enabled: true, recipientEmail: 'doulotaligettopgrowth@gmail.com', web3formKey: '81e529bf-cc0a-4104-b8c3-def656e8d0fb' });
       
       // Clear all unlocked boxes when entering Admin Panel
       setUnlockedFields({});
@@ -322,7 +322,7 @@ export default function AdminPanel() {
       setLocalBooking(data.booking || defaultBooking);
       setLocalBookingPlatforms(data.bookingPlatforms || defaultBookingPlatforms);
       setLocalContact(data.contactInfo);
-      setLocalEmailNotification(data.emailNotification || { enabled: true, recipientEmail: 'doulotaligettopgrowth@gmail.com', web3formKey: '2fd99b81-d471-4790-8188-68f800316d9f' });
+      setLocalEmailNotification(data.emailNotification || { enabled: true, recipientEmail: 'doulotaligettopgrowth@gmail.com', web3formKey: '81e529bf-cc0a-4104-b8c3-def656e8d0fb' });
       setSuccessMsg('Reset to default data completed!');
       setTimeout(() => setSuccessMsg(''), 4000);
     }
