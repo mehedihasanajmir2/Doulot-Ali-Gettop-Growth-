@@ -3,10 +3,7 @@ import { getFirestore } from 'firebase/firestore';
 
 const projectId = (import.meta as any).env.VITE_FIREBASE_PROJECT_ID || "podcast-ranking-hub";
 
-// If using the user's custom project, we must NOT use the platform-provided Firestore database ID
-const firestoreDatabaseId = projectId === "podcast-ranking-hub"
-  ? ""
-  : ((import.meta as any).env.VITE_FIREBASE_FIRESTORE_DATABASE_ID || "");
+const firestoreDatabaseId = (import.meta as any).env.VITE_FIREBASE_FIRESTORE_DATABASE_ID || "ai-studio-doulotali-3645692c-26a0-4df1-a411-4549148162cc";
 
 const firebaseConfig = {
   projectId,
