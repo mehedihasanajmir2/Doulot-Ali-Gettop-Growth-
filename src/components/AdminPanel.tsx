@@ -413,8 +413,7 @@ export default function AdminPanel() {
               <p className="text-slate-300 mt-0.5">{firestoreError}</p>
               <p className="text-slate-400 mt-1">
                 Your edits are safely active and saved locally in your browser, but we failed to sync them to your cloud Firestore database. 
-                This usually means the custom database <code className="bg-slate-900 px-1 py-0.5 rounded text-rose-300 font-mono text-[11px]">ai-studio-doulotali-3645692c-26a0-4df1-a411-4549148162cc</code>'s 
-                rules need to be published, or you are experiencing connectivity issues.
+                This usually means the database rules need to be published on your Cloud Firestore console, or you are experiencing connectivity issues.
               </p>
             </div>
           </div>
@@ -427,13 +426,6 @@ export default function AdminPanel() {
           </button>
         </div>
       )}
-      {isSyncing && (
-        <div className="bg-blue-500/10 border-b border-blue-500/20 text-blue-200 px-4 py-1.5 text-xs flex items-center gap-2 animate-pulse shrink-0" id="firestore-sync-loader">
-          <span className="inline-block h-2 w-2 rounded-full bg-blue-400 animate-ping"></span>
-          <span>Uploading changes to Firebase Firestore...</span>
-        </div>
-      )}
-
       {/* Main Body */}
       <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
         {/* Left Side Tab Navigation */}
