@@ -223,6 +223,9 @@ interface WebsiteContextType {
   logout: () => void;
   isAdminPanelOpen: boolean;
   setAdminPanelOpen: (open: boolean) => void;
+  firestoreError: string | null;
+  clearFirestoreError: () => void;
+  isSyncing: boolean;
 }
 
 const WebsiteContext = createContext<WebsiteContextType | undefined>(undefined);
@@ -244,43 +247,51 @@ export function WebsiteProvider({ children }: { children: React.ReactNode }) {
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const [isAdminLoginOpen, setAdminLoginOpen] = useState(false);
   const [isAdminPanelOpen, setAdminPanelOpen] = useState(false);
+  const [firestoreError, setFirestoreError] = useState<string | null>(null);
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  const clearFirestoreError = () => setFirestoreError(null);
 
   // Subscribe to real-time updates from Firestore
   useEffect(() => {
     const docRef = doc(db, 'configs', 'website_data');
     
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      setFirestoreError(null);
       if (docSnap.exists()) {
         const cloudData = docSnap.data() as WebsiteData;
         const migratedData = migrateWebsiteData(cloudData);
         
         // Auto-save the Web3Forms access key if missing, empty, or using the old key in Firestore database configuration
+        let needsUpdate = false;
         if (!migratedData.emailNotification) {
           migratedData.emailNotification = {
             enabled: true,
             recipientEmail: 'doulotaligettopgrowth@gmail.com',
             web3formKey: '81e529bf-cc0a-4104-b8c3-def656e8d0fb'
           };
-          setDoc(docRef, migratedData).catch(err => console.error('Error auto-updating config with email notifications:', err));
+          needsUpdate = true;
         } else if (!migratedData.emailNotification.web3formKey || migratedData.emailNotification.web3formKey === '2fd99b81-d471-4790-8188-68f800316d9f') {
           migratedData.emailNotification.web3formKey = '81e529bf-cc0a-4104-b8c3-def656e8d0fb';
-          setDoc(docRef, migratedData).catch(err => console.error('Error auto-updating config with web3formKey:', err));
+          needsUpdate = true;
+        }
+
+        if (needsUpdate && !docSnap.metadata.hasPendingWrites) {
+          setDoc(docRef, migratedData).catch(err => console.error('Error auto-updating config:', err));
         }
 
         setData(migratedData);
         localStorage.setItem('podcast_top_rank_media_data', JSON.stringify(migratedData));
         console.log('Real-time data synced from Firestore successfully');
       } else {
-        console.log('No configurations found in Firestore. Seeding with default data...');
-        setDoc(docRef, DEFAULT_WEBSITE_DATA).catch((err) => {
-          console.error('Error seeding default data:', err);
-        });
+        console.log('No configurations found in Firestore yet. Admin edits will create the cloud document on save.');
       }
     }, (error) => {
       console.error('Error in Firestore real-time listener:', error);
       
       // Structured Firestore error formatting for system diagnostic tracing
       const errMessage = error instanceof Error ? error.message : String(error);
+      setFirestoreError(`Firestore connection error: ${errMessage}`);
       const errInfo = {
         error: errMessage,
         operationType: 'listen',
@@ -307,15 +318,25 @@ export function WebsiteProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const updateData = (newData: Partial<WebsiteData>) => {
-    setData((prev) => {
-      const updated = { ...prev, ...newData };
-      localStorage.setItem('podcast_top_rank_media_data', JSON.stringify(updated));
+    setFirestoreError(null);
+    setIsSyncing(true);
 
-      // Save to Firestore in the background
-      const docRef = doc(db, 'configs', 'website_data');
-      setDoc(docRef, updated).catch((err) => {
-        console.error('Error saving updated data to Firestore:', err);
+    const updated = { ...data, ...newData };
+    setData(updated);
+    localStorage.setItem('podcast_top_rank_media_data', JSON.stringify(updated));
+
+    // Save to Firestore in the background
+    const docRef = doc(db, 'configs', 'website_data');
+    setDoc(docRef, updated)
+      .then(() => {
+        setIsSyncing(false);
+        setFirestoreError(null);
+      })
+      .catch((err) => {
+        setIsSyncing(false);
         const errMessage = err instanceof Error ? err.message : String(err);
+        console.error('Error saving updated data to Firestore:', err);
+        setFirestoreError(`Failed to save to Cloud: ${errMessage}`);
         const errInfo = {
           error: errMessage,
           operationType: 'update',
@@ -330,34 +351,40 @@ export function WebsiteProvider({ children }: { children: React.ReactNode }) {
         };
         console.error('Firestore Error Info (Update):', JSON.stringify(errInfo));
       });
-
-      return updated;
-    });
   };
 
   const resetToDefaults = () => {
+    setFirestoreError(null);
+    setIsSyncing(true);
     setData(DEFAULT_WEBSITE_DATA);
     localStorage.setItem('podcast_top_rank_media_data', JSON.stringify(DEFAULT_WEBSITE_DATA));
 
     // Reset in Firestore as well
     const docRef = doc(db, 'configs', 'website_data');
-    setDoc(docRef, DEFAULT_WEBSITE_DATA).catch((err) => {
-      console.error('Error resetting Firestore data to default:', err);
-      const errMessage = err instanceof Error ? err.message : String(err);
-      const errInfo = {
-        error: errMessage,
-        operationType: 'update',
-        path: 'configs/website_data',
-        authInfo: {
-          userId: null,
-          email: null,
-          emailVerified: null,
-          isAnonymous: null,
-          tenantId: null
-        }
-      };
-      console.error('Firestore Error Info (Reset):', JSON.stringify(errInfo));
-    });
+    setDoc(docRef, DEFAULT_WEBSITE_DATA)
+      .then(() => {
+        setIsSyncing(false);
+        setFirestoreError(null);
+      })
+      .catch((err) => {
+        setIsSyncing(false);
+        const errMessage = err instanceof Error ? err.message : String(err);
+        console.error('Error resetting Firestore data to default:', err);
+        setFirestoreError(`Failed to reset Cloud database: ${errMessage}`);
+        const errInfo = {
+          error: errMessage,
+          operationType: 'update',
+          path: 'configs/website_data',
+          authInfo: {
+            userId: null,
+            email: null,
+            emailVerified: null,
+            isAnonymous: null,
+            tenantId: null
+          }
+        };
+        console.error('Firestore Error Info (Reset):', JSON.stringify(errInfo));
+      });
   };
 
   const login = (password: string): boolean => {
@@ -392,6 +419,9 @@ export function WebsiteProvider({ children }: { children: React.ReactNode }) {
         logout,
         isAdminPanelOpen,
         setAdminPanelOpen,
+        firestoreError,
+        clearFirestoreError,
+        isSyncing,
       }}
     >
       {children}

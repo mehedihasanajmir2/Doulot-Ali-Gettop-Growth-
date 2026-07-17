@@ -75,7 +75,10 @@ export default function AdminPanel() {
     resetToDefaults,
     isAdminPanelOpen,
     setAdminPanelOpen,
-    logout
+    logout,
+    firestoreError,
+    clearFirestoreError,
+    isSyncing
   } = useWebsiteData();
 
   const [activeTab, setActiveTab] = useState<'hero' | 'about' | 'episodes' | 'pricing' | 'testimonials' | 'team' | 'booking' | 'footer' | 'bookings'>('hero');
@@ -367,10 +370,11 @@ export default function AdminPanel() {
 
           <button
             onClick={handleSave}
-            className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 text-xs sm:text-sm tracking-wide transition-all shadow-lg shadow-emerald-900/20 active:scale-95"
+            disabled={isSyncing}
+            className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold px-4 py-2 text-xs sm:text-sm tracking-wide transition-all shadow-lg shadow-emerald-900/20 active:scale-95"
           >
-            <Save className="h-4 w-4" />
-            <span>Save Changes</span>
+            <Save className={`h-4 w-4 ${isSyncing ? 'animate-bounce' : ''}`} />
+            <span>{isSyncing ? 'Saving...' : 'Save Changes'}</span>
           </button>
 
           <button
@@ -398,6 +402,37 @@ export default function AdminPanel() {
           </button>
         </div>
       </header>
+
+      {/* Cloud Sync Status/Error Banner */}
+      {firestoreError && (
+        <div className="bg-rose-500/10 border-b border-rose-500/30 text-rose-200 px-4 py-3 text-xs sm:text-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 animate-fade-in shrink-0" id="firestore-sync-warning">
+          <div className="flex items-start gap-2.5">
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rose-500 text-slate-950 font-bold text-[10px]">!</span>
+            <div>
+              <p className="font-semibold text-rose-300">Firestore Cloud Sync Warning</p>
+              <p className="text-slate-300 mt-0.5">{firestoreError}</p>
+              <p className="text-slate-400 mt-1">
+                Your edits are safely active and saved locally in your browser, but we failed to sync them to your cloud Firestore database. 
+                This usually means the custom database <code className="bg-slate-900 px-1 py-0.5 rounded text-rose-300 font-mono text-[11px]">ai-studio-doulotali-3645692c-26a0-4df1-a411-4549148162cc</code>'s 
+                rules need to be published, or you are experiencing connectivity issues.
+              </p>
+            </div>
+          </div>
+          <button 
+            onClick={clearFirestoreError}
+            className="text-slate-400 hover:text-white px-2 py-1 rounded bg-slate-900 border border-slate-800 hover:bg-slate-800 shrink-0 font-medium text-xs transition-all"
+            id="acknowledge-sync-error"
+          >
+            Acknowledge
+          </button>
+        </div>
+      )}
+      {isSyncing && (
+        <div className="bg-blue-500/10 border-b border-blue-500/20 text-blue-200 px-4 py-1.5 text-xs flex items-center gap-2 animate-pulse shrink-0" id="firestore-sync-loader">
+          <span className="inline-block h-2 w-2 rounded-full bg-blue-400 animate-ping"></span>
+          <span>Uploading changes to Firebase Firestore...</span>
+        </div>
+      )}
 
       {/* Main Body */}
       <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
