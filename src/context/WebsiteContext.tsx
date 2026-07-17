@@ -284,7 +284,25 @@ export function WebsiteProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('podcast_top_rank_media_data', JSON.stringify(migratedData));
         console.log('Real-time data synced from Firestore successfully');
       } else {
-        console.log('No configurations found in Firestore yet. Admin edits will create the cloud document on save.');
+        console.log('No configurations found in Firestore yet. Seeding default/local data...');
+        let initialDataToSeed = DEFAULT_WEBSITE_DATA;
+        const savedData = localStorage.getItem('podcast_top_rank_media_data');
+        if (savedData) {
+          try {
+            initialDataToSeed = migrateWebsiteData(JSON.parse(savedData));
+          } catch (e) {
+            console.error('Failed to parse local data for seeding:', e);
+          }
+        }
+        setDoc(docRef, initialDataToSeed)
+          .then(() => {
+            console.log('Successfully seeded Firestore with default/local website data.');
+          })
+          .catch((err) => {
+            console.error('Error seeding website data to Firestore:', err);
+            // Non-blocking warning since the local storage fallback continues to work perfectly
+            setFirestoreError(`Failed to auto-seed Cloud database: ${err instanceof Error ? err.message : String(err)}. Please try saving your edits manually in the admin console.`);
+          });
       }
     }, (error) => {
       console.error('Error in Firestore real-time listener:', error);
