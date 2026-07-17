@@ -16,9 +16,9 @@ const firebaseConfig = {
 // Initialize Firebase App
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firestore with specific database ID if provided, otherwise default
-export const db = firebaseConfig.firestoreDatabaseId
-  ? getFirestore(app, firebaseConfig.firestoreDatabaseId)
-  : getFirestore(app);
+// Initialize Firestore with specific database ID.
+// Fallback to the custom named database ID 'ai-studio-doulotali-3645692c-26a0-4df1-a411-4549148162cc' if not specified in the environment or config.
+const dbId = firebaseConfig.firestoreDatabaseId || "ai-studio-doulotali-3645692c-26a0-4df1-a411-4549148162cc";
+export const db = getFirestore(app, dbId);
 
 export default app;
