@@ -365,14 +365,6 @@ export default function AdminPanel() {
           </button>
 
           <button
-            onClick={handleReset}
-            className="rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white p-2 transition-all active:scale-95"
-            title="Reset changes"
-          >
-            <RotateCcw className="h-4 w-4" />
-          </button>
-
-          <button
             onClick={logout}
             className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full bg-rose-600/10 hover:bg-rose-600/20 text-rose-400 font-bold px-3 py-2 text-xs transition-all active:scale-95"
           >
